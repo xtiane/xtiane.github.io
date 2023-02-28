@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        
+        <title>RPS Game</title>
+
+    </head>
+
+    <body>
+        <h3 class="m-3 text-center">Rock Paper Scissors Game</h3>
+
+        <div class="container">
+
+            <div class="row m-3">
+                <!-- PLAYER SCORE -->
+                <div class="col-6">
+                    <div class="m-3">
+                        <h3>PLAYER</h3>
+                        <p class="playerTotal">0</p>
+                    </div>
+                </div>
+                <!-- COMPUTER SCORE -->
+                <div class="col-6">
+                    <div class="m-3 text-end">
+                        <h3>COMPUTER</h3>
+                        <p class="computerTotal">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MOVES COUNTER -->
+            <div class="row m-3 text-center">
+                <h3>MOVES</h3>
+                <p class="movesCounter">5</p>
+            </div>
+
+            <!-- PLAYER BUTTONS -->
+            <div class="row m-3">
+                <div class="d-flex flex-row justify-content-center">
+                        <button type="button" class='player-buttons btn-rock btn btn-secondary m-3 rounded'>rock</button>
+                        <button type="button" class='player-buttons btn-paper btn btn-secondary m-3 rounded'>paper</button>
+                        <button type="button" class='player-buttons btn-scissors btn btn-secondary m-3 rounded'>scissors</button>
+                </div>
+            </div>     
+
+            <!-- RESULTS OF EACH PLAYED HAND AND WINNER -->
+            <div class="row m-3">
+                <div class="result d-flex justify-content-center"></div>
+                <div class="displayWinner d-flex justify-content-center"></div>
+            </div>
+
+            <!-- PLAY AGAIN BUTTON -->
+            <div class="row m-3">
+                <div class="d-flex flex-row justify-content-center">
+                        <button type="button" class="btn-playAgain btn btn-secondary m-3 rounded" style="display:none" onclick="location.reload()">Play Again</button>
+                </div>
+            </div>
+
+            <!-- LIST OF PLAYED HANDS -->
+            <div class="row m-3">
+                <div class="d-flex justify-content-center">
+                    <ul class="vs list-unstyled text-center"></ul>
+                </div>
+            </div>            
+
+        <script>
+
+            function startGame() {
+
+                // RESET SCORES
+                let playerScore = 0;
+                let computerScore = 0;
+                let moves = 5;
+                
+                
+                function playGame() {
+
+                    // BUTTON VARIABLES
+                    const prock = document.querySelector(".btn-rock");
+                    const ppaper = document.querySelector(".btn-paper");
+                    const pscissors = document.querySelector(".btn-scissors");
+
+                    // ARRAYS FOR THE PLAYER AND COMPUTER
+                    const playerHand = [prock,ppaper,pscissors];
+                    const computerHand = ["rock","paper","scissors"];
+                    
+                    // LISTENER FOR EACH BUTTON PRESSED
+                    playerHand.forEach(phand => {
+                        phand.addEventListener("click",function() {
+
+                            // GENERATE THE COMPUTER HAND
+                            const crandom = Math.floor(Math.random()*3);
+                            const cchoice = computerHand[crandom]; 
+                        
+                            // this.innertext - TEXT CONTENT OF THE BUTTON ELEMENT THAT WAS CLICKED
+                            // PERFORM FUNCTION TO COMPARE AND CHECK WINNER
+                            checkWinner(this.innerText, cchoice); 
+
+                            // DECREMENT THE MOVES COUNTER AND DISPLAY
+                            const m = document.querySelector(".movesCounter");
+                            moves--;
+                            m.innerText = moves;
+
+                            // CHECKS IF THERE ARE NO MORE MOVES LEFT
+                            if (moves == 0) {
+                                gameOver(playerHand);
+                            }
+                        })
+                    })
+                }
+                
+
+                function checkWinner(phand, chand) {
+
+                    // TOTAL VARIABLES
+                    const playerScoreTotal = document.querySelector(".playerTotal");
+                    const computerScoreTotal = document.querySelector(".computerTotal");
+
+                    // RESULT AND LIST VARIABLES
+                    const result = document.querySelector(".result");
+                    const vslist = document.querySelector(".vs")
+                    
+                    // CREATES A LIST ITEM AND APPENDS TO UL
+                    let li = document.createElement("li");
+                    li.innerText = phand + " vs. " + chand;
+                    vslist.appendChild(li);
+                  
+                    // COMPARING PLAYER AND COMPUTER HANDS
+                    if (phand == chand ) {
+                        result.textContent = "Tie"
+                    }
+
+                    else if (phand == "rock") {
+                        if (chand == "paper") {
+                            result.textContent = "Computer +1";
+                            computerScore++;
+                            computerScoreTotal.textContent = computerScore;
+                        }
+                        else {
+                            result.textContent = "Player +1";
+                            playerScore++;
+                            playerScoreTotal.textContent = playerScore;
+                        }
+                    }
+
+                    else if (phand == "paper") {
+                        if (chand == "scissors") {
+                            result.textContent = "Computer +1";
+                            computerScore++;
+                            computerScoreTotal.textContent = computerScore;
+                        }
+                        else {
+                            result.textContent = "Player +1";
+                            playerScore++;
+                            playerScoreTotal.textContent = playerScore;
+                        }
+                    }
+
+                    else if (phand == "scissors") {
+                        if (chand == "rock") {
+                            result.textContent = "Computer +1";
+                            computerScore++;
+                            computerScoreTotal.textContent = computerScore;
+                        }
+                        else {
+                            result.textContent = "Player +1";
+                            playerScore++;
+                            playerScoreTotal.textContent = playerScore;
+                        }
+                    }
+                       
+                }
+
+
+                function gameOver(playerHand) {
+
+                    // FINAL RESULT, WINNER, AND PLAY AGAIN BUTTON VARIABLES
+                    const result = document.querySelector(".result");
+                    const displayWinner = document.querySelector(".displayWinner");
+                    const playAgain = document.querySelector(".btn-playAgain");
+
+                    // DISPLAY TEXT FOR GAME OVER
+                    result.innerText = "Game Over!";
+
+                    // COMPARES TOTALS AND DISPLAYS WINNER
+                    if (playerScore > computerScore) {
+                        displayWinner.innerText = "You Win!";
+                    }
+
+                    else if (playerScore < computerScore) {
+                        displayWinner.innerText = "Computer Wins!";
+                    }
+
+                    else {
+                        displayWinner.innerText = "It's a Tie!";
+                    }
+
+                    // DISPLAY PLAY AGAIN BUTTON
+                    playAgain.style.display = "initial";
+
+                    // HIDES PLAYER BUTTONS
+                    playerHand.forEach(phand => {
+                        phand.style.display = "none";
+                    })
+                    
+                }
+
+                playGame(); 
+            }
+            
+            startGame();
+
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    </body>
+    
+</html>
