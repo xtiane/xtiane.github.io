@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+        
+        <title>Tic Tac Toe Game</title>
+
+    </head>
+
+    <body>
+        <h3 class="m-3 text-center">Tic Tac Toe Game</h3>
+
+        <div class="container">
+
+            <!-- PLAYER BUTTONS -->
+            <div class="row m-3">
+                <div class="d-flex flex-row justify-content-center">
+                        <button type="button" class='player-buttons btn-11 btn btn-secondary m-3 rounded'>☺️</button>
+                        <button type="button" class='player-buttons btn-12 btn btn-secondary m-3 rounded'>☺️</button>
+                        <button type="button" class='player-buttons btn-13 btn btn-secondary m-3 rounded'>☺️</button>
+                </div>
+            </div>
+            <div class="row m-3">
+                <div class="d-flex flex-row justify-content-center">
+                        <button type="button" class='player-buttons btn-21 btn btn-secondary m-3 rounded'>☺️</button>
+                        <button type="button" class='player-buttons btn-22 btn btn-secondary m-3 rounded'>☺️</button>
+                        <button type="button" class='player-buttons btn-23 btn btn-secondary m-3 rounded'>☺️</button>
+                </div>
+            </div>    
+            <div class="row m-3">
+                <div class="d-flex flex-row justify-content-center">
+                        <button type="button" class='player-buttons btn-31 btn btn-secondary m-3 rounded'>☺️</button>
+                        <button type="button" class='player-buttons btn-32 btn btn-secondary m-3 rounded'>☺️</button>
+                        <button type="button" class='player-buttons btn-33 btn btn-secondary m-3 rounded'>☺️</button>
+                </div>
+            </div>          
+
+            <!-- DISPLAYS RESULTS AND WINNER -->
+            <div class="row m-3">
+                <div class="result d-flex justify-content-center"></div>
+                <div class="displayWinner d-flex justify-content-center"></div>
+            </div>
+
+            <!-- PLAY AGAIN BUTTON -->
+            <div class="row m-3">
+                <div class="d-flex flex-row justify-content-center">
+                        <button type="button" class="btn-playAgain btn btn-secondary m-3 rounded" style="display:none" onclick="location.reload()">Play Again</button>
+                </div>
+            </div>
+
+        <script>
+
+            // START EVEN
+            let moves = 2; 
+
+            function startGame() {
+
+                function playGame() {
+
+                    // BUTTON VARIABLES
+                    const b11 = document.querySelector(".btn-11");
+                    const b12 = document.querySelector(".btn-12");
+                    const b13 = document.querySelector(".btn-13");
+                    const b21 = document.querySelector(".btn-21");
+                    const b22 = document.querySelector(".btn-22");
+                    const b23 = document.querySelector(".btn-23");
+                    const b31 = document.querySelector(".btn-31");
+                    const b32 = document.querySelector(".btn-32");
+                    const b33 = document.querySelector(".btn-33");
+
+                    // ARRAYS FOR BOARD
+                    const board = [b11,b12,b13,b21,b22,b23,b31,b32,b33];
+                    
+                    // LISTENER FOR EACH BUTTON PRESSED
+                    board.forEach(pressb => {
+                        pressb.addEventListener("click",function() {
+
+                            // CHANGE THE VALUE INSIDE THE BUTTON TO O OR X
+                            if (moves % 2 == 0) {
+                                this.innerText = "X";
+                                this.style.backgroundColor = "blue";
+                            }
+                            else {
+                                this.innerText = "O";
+                                this.style.backgroundColor = "pink";
+                            }
+
+                            moves++;
+                            
+                            checkWinner(board);
+                            
+                        })
+                    })
+                }
+
+                function checkWinner(t3board) {
+
+                    // RESULT VARIABLE
+                    const result = document.querySelector(".result");
+                    
+                    const b11 = t3board[0].innerText;
+                    const b12 = t3board[1].innerText;
+                    const b13 = t3board[2].innerText;
+                    const b21 = t3board[3].innerText;
+                    const b22 = t3board[4].innerText;
+                    const b23 = t3board[5].innerText;
+                    const b31 = t3board[6].innerText;
+                    const b32 = t3board[7].innerText;
+                    const b33 = t3board[8].innerText;
+
+                    // ROWS
+                    if  ( 
+                        ((b11 =="X" || b11 == "O") && (b11 == b12 && b12 == b13)) ||
+                        ((b21 =="X" || b21 == "O") && (b21 == b22 && b22 == b23)) ||
+                        ((b31 =="X" || b31 == "O") && (b31 == b32 && b32 == b33)) ||
+                    // COLUMNS
+                        ((b11 =="X" || b11 == "O") && (b11 == b21 && b21 == b31)) ||
+                        ((b12 =="X" || b12 == "O") && (b12 == b22 && b22 == b32)) ||
+                        ((b13 =="X" || b13 == "O") && (b13 == b23 && b23 == b33)) ||
+                    // DIAGONAL
+                        ((b11 =="X" || b11 == "O") && (b11 == b22 && b22 == b33))
+                        )   {
+                        gameOver(t3board);   
+                    }
+                    else if (moves == 11) {
+                        gameOver(t3board);
+                    }
+                      
+                }
+
+                function gameOver(board) {
+
+                    // FINAL RESULT, WINNER, AND PLAY AGAIN BUTTON VARIABLES
+                    const result = document.querySelector(".result");
+                    const displayWinner = document.querySelector(".displayWinner");
+                    const playAgain = document.querySelector(".btn-playAgain");
+
+                    result.innerText = "Game Over!";
+
+                    // CHECKS IF THERE ARE NO MORE MOVES LEFT
+                    if (moves == 11) {
+                        displayWinner.innerText = "No Winner!";
+                    }
+                    
+                    else if (moves % 2 == 0) {
+                        displayWinner.innerText = "Player O Wins!";
+                    } 
+
+                    else {
+                        displayWinner.innerText = "Player X Wins!";
+                    }
+                    
+                    board.forEach(pressb => {
+                        pressb.disabled = "true";
+                    });
+                    
+                    playAgain.style.display = "";
+                    
+                }
+
+                playGame(); 
+            }
+            
+            startGame();
+
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    </body>
+    
+</html>
