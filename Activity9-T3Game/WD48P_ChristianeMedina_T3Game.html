@@ -123,15 +123,15 @@
                         ((b11 =="X" || b11 == "O") && (b11 == b22 && b22 == b33)) ||
                         ((b13 =="X" || b13 == "O") && (b13 == b22 && b22 == b31))
                         )   {
-                        gameOver(t3board);   
-                    }
+                        gameOver(true,t3board); 
+                    }  
                     else if (moves == 11) {
-                        gameOver(t3board);
+                        gameOver(false,t3board);
                     }
                       
                 }
 
-                function gameOver(board) {
+                function gameOver(flag,board) {
 
                     // FINAL RESULT, WINNER, AND PLAY AGAIN BUTTON VARIABLES
                     const result = document.querySelector(".result");
@@ -141,7 +141,7 @@
                     result.innerText = "Game Over!";
 
                     // CHECKS IF THERE ARE NO MORE MOVES LEFT
-                    if (moves == 11) {
+                    if (moves == 11 && flag == false) {
                         displayWinner.innerText = "No Winner!";
                     }
                     
